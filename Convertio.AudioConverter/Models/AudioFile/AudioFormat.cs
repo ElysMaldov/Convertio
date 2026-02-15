@@ -8,12 +8,12 @@ namespace Convertio.AudioConverter.Models.AudioFile;
 /// </summary>
 public abstract record AudioFormat(string ExtensionLabel, string MimeType)
 {
-  public static AudioFormat FromMimeType(string mimeType) => mimeType.ToLower() switch
+  public static AudioFormat FromTaglibMimeType(string mimeType) => mimeType.ToLower() switch
   {
-    "audio/mpeg" => new MP3(),
-    "audio/aac" => new AAC(),
-    "audio/flac" => new FLAC(),
-    "audio/wav" => new WAV(),
+    "taglib/mp3" => new MP3(),
+    "taglib/aac" => new AAC(),
+    "taglib/flac" => new FLAC(),
+    "taglib/wav" => new WAV(),
     _ => throw new NotSupportedException($"{mimeType} is not supported.")
   };
 }

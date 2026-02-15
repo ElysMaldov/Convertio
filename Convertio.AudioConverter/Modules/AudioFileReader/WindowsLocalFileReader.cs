@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.Marshalling;
 using Convertio.AudioConverter.Models.AudioFile;
 using Convertio.AudioConverter.Modules.FileReader;
 
@@ -14,6 +15,8 @@ public class WindowsLocalAudioFileReader : IAudioFileReader
 
     try
     {
+      // We use a seperate FileInfo to actually get the size, TagLib doesn't provide this
+      long fileSizeBytes = new FileInfo(path).Length;
       // Use using to dispose TagLib.File that implements IDisposable
       using var file = TagLib.File.Create(path);
 
@@ -21,14 +24,13 @@ public class WindowsLocalAudioFileReader : IAudioFileReader
       {
         FileName = file.Name,
         DurationMs = (long)file.Properties.Duration.TotalMilliseconds,
-        FileSizeBytes = file.Length,
-        AudioFormat = AudioFormat.FromMimeType(file.MimeType)
+        FileSizeBytes = fileSizeBytes,
+        AudioFormat = AudioFormat.FromTaglibMimeType(file.MimeType)
       };
     }
     catch (TagLib.UnsupportedFormatException)
     {
       throw new NotSupportedException($"File format of {path} is not supported");
     }
-
   }
 }
