@@ -8,9 +8,14 @@ namespace Convertio.AudioConverter.Models.AudioFile;
 /// </summary>
 public abstract record AudioFormat(string ExtensionLabel, string MimeType)
 {
-  // Init only allows setting this once during construction
-  public required string ExtensionLabel { get; init; } = ExtensionLabel;
-  public required string MimeType { get; init; } = MimeType;
+  public static AudioFormat FromMimeType(string mimeType) => mimeType.ToLower() switch
+  {
+    "audio/mpeg" => new MP3(),
+    "audio/aac" => new AAC(),
+    "audio/flac" => new FLAC(),
+    "audio/wav" => new WAV(),
+    _ => throw new NotSupportedException($"{mimeType} is not supported.")
+  };
 }
 
 // sealed stops other class from inheriting these further
