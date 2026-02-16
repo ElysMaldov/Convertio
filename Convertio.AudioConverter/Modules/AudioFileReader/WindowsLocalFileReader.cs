@@ -20,7 +20,7 @@ public class WindowsLocalAudioFileReader : IAudioFileReader
       // Use using to dispose TagLib.File that implements IDisposable
       using var file = TagLib.File.Create(path);
 
-      return new WindowsLocalAudioFile
+      return new AudioFile
       {
         FileName = file.Name,
         DurationMs = (long)file.Properties.Duration.TotalMilliseconds,

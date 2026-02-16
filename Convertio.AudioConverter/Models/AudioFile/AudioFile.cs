@@ -1,6 +1,6 @@
 namespace Convertio.AudioConverter.Models.AudioFile;
 
-public class WindowsLocalAudioFile : IAudioFile
+public class AudioFile : IAudioFile
 {
   public required string FileName { get; init; }
   public required AudioFormat AudioFormat { get; init; }
