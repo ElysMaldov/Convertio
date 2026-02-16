@@ -1,6 +1,5 @@
-using System.Runtime.InteropServices.Marshalling;
 using Convertio.AudioConverter.Models.AudioFile;
-using Convertio.AudioConverter.Modules.FileReader;
+
 
 namespace Convertio.AudioConverter.Modules.AudioFileReader;
 
@@ -25,7 +24,7 @@ public class WindowsLocalAudioFileReader : IAudioFileReader
         FileName = file.Name,
         DurationMs = (long)file.Properties.Duration.TotalMilliseconds,
         FileSizeBytes = fileSizeBytes,
-        AudioFormat = AudioFormat.FromTaglibMimeType(file.MimeType)
+        AudioFormat = FromTaglibMimeType(file.MimeType)
       };
     }
     catch (TagLib.UnsupportedFormatException)
@@ -33,4 +32,13 @@ public class WindowsLocalAudioFileReader : IAudioFileReader
       throw new NotSupportedException($"File format of {path} is not supported");
     }
   }
+
+  private static AudioFormat FromTaglibMimeType(string mimeType) => mimeType.ToLower() switch
+  {
+    "taglib/mp3" => AudioFormat.MP3,
+    "taglib/aac" => AudioFormat.AAC,
+    "taglib/flac" => AudioFormat.FLAC,
+    "taglib/wav" => AudioFormat.WAV,
+    _ => throw new NotSupportedException($"{mimeType} is not supported.")
+  };
 }

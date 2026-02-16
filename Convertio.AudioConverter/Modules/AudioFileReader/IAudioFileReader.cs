@@ -1,6 +1,6 @@
 using Convertio.AudioConverter.Models.AudioFile;
 
-namespace Convertio.AudioConverter.Modules.FileReader;
+namespace Convertio.AudioConverter.Modules.AudioFileReader;
 
 public interface IAudioFileReader
 {
